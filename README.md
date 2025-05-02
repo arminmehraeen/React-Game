@@ -45,7 +45,7 @@ A modern, animated Rock Paper Scissors game built with React, featuring beautifu
 - Persistent storage using localStorage
 - Date tracking for each score
 
-## Technologies Used 🛠
+## Technologies Used 🛠️
 
 - React
 - React Router
@@ -74,7 +74,7 @@ npm run dev
 
 4. Open [http://localhost:5173](http://localhost:5173) in your browser
 
-## Building for Production 🏗
+## Building for Production 🏗️
 
 To create a production build:
 
@@ -88,7 +88,7 @@ The build files will be created in the `dist` directory.
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
-## License 📝
+## License 📄
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
