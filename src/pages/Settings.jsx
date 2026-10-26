@@ -1,151 +1,28 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { FaArrowLeft, FaVolumeUp, FaVolumeMute, FaMobile, FaMoon, FaSun } from 'react-icons/fa';
-import { useGame } from '../context/GameContext';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import { FaArrowLeft, FaVolumeUp, FaMobileAlt, FaMoon, FaSun, FaBolt, FaTrashAlt } from "react-icons/fa";
+import { useGame } from "../context/GameContext";
+
+const Toggle = ({ label, detail, checked, onChange, icon }) => <div className="setting-row"><div className="flex items-center gap-3"><span className="setting-icon">{icon}</span><div><p className="font-bold text-white">{label}</p><p className="mt-1 text-xs text-slate-500">{detail}</p></div></div><button type="button" role="switch" aria-checked={checked} aria-label={label} onClick={onChange} className={`toggle-track ${checked ? "toggle-on" : ""}`}><span className="toggle-thumb" /></button></div>;
 
 const Settings = () => {
   const navigate = useNavigate();
-  const { settings, updateSettings } = useGame();
-
-  const themes = [
-    { id: 'default', name: 'Default', icon: <FaSun className="text-yellow-500" /> },
-    { id: 'dark', name: 'Dark', icon: <FaMoon className="text-gray-700" /> },
-    { id: 'neon', name: 'Neon', icon: <span className="text-pink-500">✨</span> },
-  ];
-
-  const difficulties = [
-    { id: 'easy', name: 'Easy' },
-    { id: 'normal', name: 'Normal' },
-    { id: 'hard', name: 'Hard' },
-  ];
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-600 to-blue-500 flex items-center justify-center p-4">
-      <motion.div
-        initial={{ scale: 0.9, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        className="bg-white/90 backdrop-blur-lg rounded-2xl shadow-2xl p-8 max-w-2xl w-full"
-      >
-        <div className="flex items-center justify-between mb-8">
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => navigate('/')}
-            className="text-gray-600 hover:text-gray-800 transition-colors"
-          >
-            <FaArrowLeft className="text-2xl" />
-          </motion.button>
-          <h1 className="text-4xl font-bold text-gray-800">Settings</h1>
-          <div className="w-8" />
-        </div>
-
-        <div className="space-y-8">
-          {/* Sound Settings */}
-          <div className="bg-white/50 backdrop-blur-sm rounded-xl p-6">
-            <h2 className="text-2xl font-semibold text-gray-800 mb-4">Sound & Vibration</h2>
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  {settings.soundEnabled ? (
-                    <FaVolumeUp className="text-2xl text-blue-500" />
-                  ) : (
-                    <FaVolumeMute className="text-2xl text-gray-400" />
-                  )}
-                  <span className="text-lg text-gray-700">Sound Effects</span>
-                </div>
-                <motion.button
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => updateSettings({ soundEnabled: !settings.soundEnabled })}
-                  className={`w-14 h-7 rounded-full p-1 transition-colors ${
-                    settings.soundEnabled ? 'bg-blue-500' : 'bg-gray-300'
-                  }`}
-                >
-                  <motion.div
-                    animate={{ x: settings.soundEnabled ? 28 : 0 }}
-                    className="w-5 h-5 bg-white rounded-full shadow-md"
-                  />
-                </motion.button>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <FaMobile className={`text-2xl ${settings.vibrationEnabled ? 'text-blue-500' : 'text-gray-400'}`} />
-                  <span className="text-lg text-gray-700">Vibration</span>
-                </div>
-                <motion.button
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => updateSettings({ vibrationEnabled: !settings.vibrationEnabled })}
-                  className={`w-14 h-7 rounded-full p-1 transition-colors ${
-                    settings.vibrationEnabled ? 'bg-blue-500' : 'bg-gray-300'
-                  }`}
-                >
-                  <motion.div
-                    animate={{ x: settings.vibrationEnabled ? 28 : 0 }}
-                    className="w-5 h-5 bg-white rounded-full shadow-md"
-                  />
-                </motion.button>
-              </div>
-            </div>
-          </div>
-
-          {/* Theme Selection */}
-          <div className="bg-white/50 backdrop-blur-sm rounded-xl p-6">
-            <h2 className="text-2xl font-semibold text-gray-800 mb-4">Theme</h2>
-            <div className="grid grid-cols-3 gap-4">
-              {themes.map((theme) => (
-                <motion.button
-                  key={theme.id}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => updateSettings({ theme: theme.id })}
-                  className={`p-4 rounded-xl flex flex-col items-center space-y-2 ${
-                    settings.theme === theme.id
-                      ? 'bg-blue-500 text-white'
-                      : 'bg-white/50 text-gray-700'
-                  }`}
-                >
-                  <div className="text-2xl">{theme.icon}</div>
-                  <span className="font-medium">{theme.name}</span>
-                </motion.button>
-              ))}
-            </div>
-          </div>
-
-          {/* Difficulty Selection */}
-          <div className="bg-white/50 backdrop-blur-sm rounded-xl p-6">
-            <h2 className="text-2xl font-semibold text-gray-800 mb-4">Difficulty</h2>
-            <div className="grid grid-cols-3 gap-4">
-              {difficulties.map((difficulty) => (
-                <motion.button
-                  key={difficulty.id}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => updateSettings({ difficulty: difficulty.id })}
-                  className={`p-4 rounded-xl text-center font-medium ${
-                    settings.difficulty === difficulty.id
-                      ? 'bg-blue-500 text-white'
-                      : 'bg-white/50 text-gray-700'
-                  }`}
-                >
-                  {difficulty.name}
-                </motion.button>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => navigate('/')}
-          className="mt-8 w-full bg-blue-500 text-white py-3 rounded-xl font-semibold hover:bg-blue-600 transition-colors"
-        >
-          Save Settings
-        </motion.button>
-      </motion.div>
-    </div>
-  );
+  const { settings, updateSettings, resetProgress } = useGame();
+  const [name, setName] = useState(settings.playerName || "Player One");
+  const [confirmReset, setConfirmReset] = useState(false);
+  const themes = [{ id: "aurora", name: "Aurora", icon: <FaBolt /> }, { id: "dark", name: "Midnight", icon: <FaMoon /> }, { id: "light", name: "Daylight", icon: <FaSun /> }, { id: "neon", name: "Cyber", icon: <span>✦</span> }];
+  return <main className="app-shell min-h-screen px-4 py-8 sm:px-6 sm:py-10"><div className="ambient ambient-two" /><div className="relative z-10 mx-auto max-w-3xl">
+    <header className="mb-7 flex items-center justify-between"><button onClick={() => navigate("/")} className="secondary-button"><FaArrowLeft /> Back</button><div className="text-right"><p className="eyebrow">MAKE IT YOURS</p><h1 className="text-2xl font-black text-white sm:text-3xl">Settings</h1></div></header>
+    <section className="hero-panel space-y-7 p-5 sm:p-8">
+      <div><h2 className="section-heading">Player profile</h2><p className="section-description">Your name appears in the arena and on your score records.</p><label htmlFor="player-name" className="mt-4 block text-xs font-bold uppercase tracking-widest text-slate-400">Display name</label><input id="player-name" maxLength={22} value={name} onChange={(event) => setName(event.target.value)} className="field-input mt-2" placeholder="Enter your name" /></div>
+      <div><h2 className="section-heading">Match format</h2><p className="section-description">Choose how long each match lasts.</p><div className="mt-4 grid grid-cols-3 gap-3">{[1, 3, 5].map((count) => <button key={count} onClick={() => updateSettings({ bestOf: count })} className={`option-card ${Number(settings.bestOf) === count ? "option-active" : ""}`}><strong>Best of {count}</strong><span>{Math.ceil(count / 2)} to win</span></button>)}</div></div>
+      <div><h2 className="section-heading">Difficulty</h2><p className="section-description">The computer adapts its strategy to the selected level.</p><div className="mt-4 grid grid-cols-3 gap-3">{[{ id: "easy", title: "Easy", detail: "Relaxed" }, { id: "normal", title: "Normal", detail: "Balanced" }, { id: "hard", title: "Hard", detail: "Clever AI" }].map((item) => <button key={item.id} onClick={() => updateSettings({ difficulty: item.id })} className={`option-card ${settings.difficulty === item.id ? "option-active" : ""}`}><strong>{item.title}</strong><span>{item.detail}</span></button>)}</div></div>
+      <div><h2 className="section-heading">Appearance</h2><p className="section-description">Pick the atmosphere for your arena.</p><div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">{themes.map((theme) => <button key={theme.id} onClick={() => updateSettings({ theme: theme.id })} className={`theme-option ${settings.theme === theme.id ? "theme-active" : ""}`}><span>{theme.icon}</span><strong>{theme.name}</strong></button>)}</div></div>
+      <div><h2 className="section-heading">Experience</h2><div className="mt-3"><Toggle label="Sound effects" detail="Subtle audio feedback" checked={settings.soundEnabled} onChange={() => updateSettings({ soundEnabled: !settings.soundEnabled })} icon={<FaVolumeUp />} /><Toggle label="Vibration" detail="Haptic feedback on supported devices" checked={settings.vibrationEnabled} onChange={() => updateSettings({ vibrationEnabled: !settings.vibrationEnabled })} icon={<FaMobileAlt />} /></div></div>
+      <div className="flex flex-col gap-3 sm:flex-row"><motion.button whileTap={{ scale: .98 }} onClick={() => { updateSettings({ playerName: name.trim() || "Player One" }); navigate("/"); }} className="primary-button flex-1 justify-center">Save preferences</motion.button><button onClick={() => { if (confirmReset) { resetProgress(); setConfirmReset(false); } else setConfirmReset(true); }} className="danger-button justify-center"><FaTrashAlt /> {confirmReset ? "Confirm reset" : "Reset records"}</button></div>
+      {confirmReset && <p className="text-xs text-rose-300">Click “Confirm reset” again to clear your match statistics and leaderboard. Your settings will stay saved.</p>}
+    </section>
+  </div></main>;
 };
-
-export default Settings; 
+export default Settings;
